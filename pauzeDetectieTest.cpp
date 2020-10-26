@@ -1,5 +1,4 @@
 #include "hwlib.hpp" 
-#include <iostream>
 #include <vector>
 
 int pauze_detectie(){
