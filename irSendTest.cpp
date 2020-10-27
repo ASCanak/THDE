@@ -31,23 +31,23 @@ int main( void ){
         sw.refresh();
         
         while(! sw.read()){
+            red.write(1);
             ir.write(1);
             ir.flush();
-            red.write(1);
             red.flush();
             
             hwlib::wait_ms(9);
             
+            red.write(0);
             ir.write(0);
             ir.flush();
-            red.write(0);
             
             hwlib::wait_ms(4.5);
             
             for(int i = 31; i >= 0 ; i--){
+                red.write(1);
                 ir.write(1);
                 ir.flush();
-                red.write(1);
 
                 hwlib::wait_ms(getDelays(getBit(irBericht, i)));
 
@@ -57,7 +57,7 @@ int main( void ){
                 
                 hwlib::wait_ms(getDelays(getBit(irBericht, i) + 1));
             }
-            hwlib::wait_ms(4);
+            hwlib::wait_ms(3);
         }
     }
     return 0;
