@@ -57,6 +57,16 @@ int main( void ){
                 
                 hwlib::wait_ms(getDelays(getBit(irBericht, i) + 1));
             }
+            red.write(1);
+            ir.write(1);
+            ir.flush();
+            
+            hwlib::wait_ms(0.8);
+            
+            red.write(0);
+            ir.write(0);
+            ir.flush();
+            
             hwlib::wait_ms(3);
         }
     }
