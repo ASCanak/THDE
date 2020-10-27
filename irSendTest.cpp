@@ -25,7 +25,7 @@ int main( void ){
     // switch which enables the 38 kHz output
     auto sw = hwlib::target::pin_in( hwlib::target::pins::d45 );
     
-    unsigned int irBericht = 0b10011111100111111001111110011111;
+    unsigned int irBericht = 0b10010111011010001001011101101000; 
     
     for(;;){
         sw.refresh();
