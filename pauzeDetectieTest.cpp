@@ -21,7 +21,7 @@ int main(void){
 	tsop_gnd.flush();
 	tsop_vdd.flush();
 	
-	int idle, signal = 0;
+	int idle = 0;
 	vector<int> waarde;
 	
 	for(;;){
