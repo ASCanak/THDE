@@ -9,7 +9,7 @@ int pauze_detectie(unsigned int n){
 		return 2;
 }
 
-int main(void){
+void ir_receiver(){
 	namespace target = hwlib::target;
 	
 	auto tsop_signal = target::pin_in( target::pins::d8 );
@@ -20,30 +20,38 @@ int main(void){
 	tsop_gnd.flush();
 	tsop_vdd.flush();
 	
-	int idle = 0;
+	unsigned int idle, arrayCount = 0;
+	unsigned int bitSize = 32;
+	int array [bitSize];
 	
 	for(;;){
 		tsop_signal.refresh();
-			
-		if( tsop_signal.read() == 0 && idle > 0 ){
+		if(arrayCount == bitSize)
+			break;	
+		else if( tsop_signal.read() == 0 && idle > 0 && arrayCount != bitSize){
 			if(pauze_detectie(idle) != 2){
-				
-				hwlib::cout << "bit nummer is: " << pauze_detectie(idle) << '\n';
+				array[arrayCount] = pauze_detectie(idle);
+				arrayCount++;
 				idle = 0;
 			}
-			else if(pauze_detectie(idle) == 2){
-				hwlib::cout << idle;
+			else if(pauze_detectie(idle) == 2)
 				idle = 0;
-				hwlib::cout << " bit nummer is: " << pauze_detectie(idle) << '\n';
-			}
 			else 
 				continue;
 		}
-		else{
+		else
 			idle += 100;
-			hwlib::cout << idle << '\n';
-		}			
-		hwlib::now_us();
-		hwlib::wait_ms( 0.1 );
+		hwlib::wait_us( 100 );
+	}
+	for(unsigned int i = 0; i < bitSize; i++){
+		hwlib::cout << array[i] << " ";
+	}
+	hwlib::cout << "\n";
+	return;
+}
+
+int main( void ){
+	for(;;){
+		ir_receiver();
 	}
 }
