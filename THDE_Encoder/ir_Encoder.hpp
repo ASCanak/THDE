@@ -1,16 +1,21 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
+struct message{unsigned int plrID; unsigned int data;};
+
 class ir_Encoder : public rtos::task<>{
 
-enum state_t = {WAIT_Message, encodeMessage};
-auto ir = hwlib::target::d2_36kHz();
+enum state_t{WAIT_Message, encodeMessage};
+
+hwlib::target::d2_36kHz ir = hwlib::target::d2_36kHz();
+hwlib::target::pin_out led = hwlib::target::pin_out(hwlib::target::pins::d40);
 
 private:
     state_t state = WAIT_Message;
     rtos::flag flag_sendMessage;
+    rtos::pool <message> messagePool;
 
-    unsigned int data, plrID;
+    unsigned int plrID, data;
     
 public:
     ir_Encoder( unsigned int plrID, unsigned int data ):
@@ -33,6 +38,11 @@ public:
             return 800;
     }
 
+    void sendMessage(unsigned int plrID, unsigned int data){
+        messagePool.write(message(plrID, data));
+        flag_sendMessage.set();
+    }
+    
     int encoding(unsigned int plrID, unsigned int data){
         unsigned int exponent = 1;
         unsigned int controleBit = 0;
@@ -42,49 +52,46 @@ public:
             exponent *= 2;
         }
 
-        return (1 + (plrID * 2) + (data * 64) + (controleBit * 2048))
+        return (1 + (plrID * 2) + (data * 64) + (controleBit * 2048));
     }
 
-    void ir_Send(hwlib::target::pin_out &led){
-        while(! sw.read()){
+    void ir_Send(unsigned int irBericht){
+        led.flush();
+        ir.flush();
+            
+        for(int i = 15; i >= 0 ; i--){
             led.write(1);
             ir.write(1);
             ir.flush();
-            led.flush();
-            
-            hwlib::wait_ms(9);
-            
+
+            hwlib::wait_us(getDelays(getBit(irBericht, i)));
+
             led.write(0);
             ir.write(0);
             ir.flush();
-            
-            hwlib::wait_us(4500);
-            
-            for(int i = 15; i >= 0 ; i--){
-                led.write(1);
-                ir.write(1);
-                ir.flush();
-
-                hwlib::wait_us(getDelays(getBit(irBericht, i)));
-
-                led.write(0);
-                ir.write(0);
-                ir.flush();
                 
-                hwlib::wait_us(getDelays(getBit(irBericht, i) + 1));
-            }
-            led.write(1);
-            ir.write(1);
-            ir.flush();
-            
-            hwlib::wait_us(800);
-            
-            led.write(0);
-            ir.write(0);
-            ir.flush();
-            
-            hwlib::wait_ms(3);
+            hwlib::wait_us(getDelays(getBit(irBericht, i) + 1));
         }
+        hwlib::wait_ms(3);
+        
         return;
+    }
+
+private:
+    void main(){
+        for(;;){
+            switch(state){
+                case WAIT_Message:
+                    wait(flag_sendMessage);
+                    message X = messagePool.read();
+                    state = encodeMessage; 
+                    break;
+                case encodeMessage:
+                    ir_Send(encoding(X.plrID, X.data));
+                    state = WAIT_Message;
+                    break;
+                default:break;        
+            }
+        }
     }    
-}
+};
