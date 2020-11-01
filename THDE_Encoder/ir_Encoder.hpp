@@ -14,8 +14,6 @@ private:
     state_t state = WAIT_Message;
     rtos::flag flag_sendMessage;
     rtos::pool <message> messagePool;
-
-    unsigned int plrID, data;
     
 public:
     ir_Encoder( unsigned int plrID, unsigned int data ):
