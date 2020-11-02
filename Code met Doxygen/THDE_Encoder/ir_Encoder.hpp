@@ -38,7 +38,7 @@ public:
     /// Return bit from specific position
     /// \details
     /// This function compares the uint16_t variables b and mask 
-    /// whilst n specifies the position of which the bits compare with the AND operator
+    /// whilst n specifies the position of which the bits compare with the AND(&) operator
     /// and returns either a 1 or a 0.
     int getBit(uint16_t b,  int n){
         uint16_t mask = 1 << n;
