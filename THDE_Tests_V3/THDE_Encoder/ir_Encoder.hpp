@@ -18,12 +18,12 @@ private:
     unsigned int plrID, data;
     
 public:
-    ir_Encoder( unsigned int plrID, unsigned int data ):
+    ir_Encoder():
         task("ir_Encode"),
         flag_sendMessage(this, "flag_sendMessage"),
         messagePool("messagePool"),
-        plrID(plrID),
-        data(data)
+        plrID(0),
+        data(0)
     {}
 
     int getBit(uint16_t b,  int n){
@@ -41,7 +41,7 @@ public:
             return 800;
     }
 
-    void sendMessage(){ // unsigned int plrID, unsigned int data
+    void sendMessage(unsigned int plrID, unsigned int data){
         message x{plrID, data};
         messagePool.write(x);
         flag_sendMessage.set();
