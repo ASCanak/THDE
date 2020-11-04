@@ -14,10 +14,11 @@ private:
     target::pin_oc sda = target::pin_oc( target::pins::sda );
 
     hwlib::i2c_bus_bit_banged_scl_sda i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda( scl,sda );
-
     hwlib::glcd_oled oled = hwlib::glcd_oled( i2c_bus, 0x3c );
-    hwlib::font_default_8x8 f2 = hwlib::font_default_8x8();
-    hwlib::terminal_from scherm = hwlib::terminal_from(oled, f2);
+    hwlib::font_default_8x8 f1 = hwlib::font_default_8x8();
+
+    hwlib::part w1 = hwlib::part(oled, hwlibbxy(0, 0),hwlib::xy(128, 32));
+    hwlib::terminal_from scherm = hwlib::terminal_from(w1, f1);
 
 public:
     oledTaak(): 
