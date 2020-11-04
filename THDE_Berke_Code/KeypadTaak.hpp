@@ -88,6 +88,7 @@ private:
                             paramCtrl.sendKeyPress(plrID, data);
                         }
                         else 
+                            keyID = 0;
                             continue;
                     }
                 }
@@ -101,23 +102,26 @@ private:
                         if(data >= 0 && data <= 32){
                             paramCtrl.sendKeyPress(plrID, data);
                         }
+                        else 
+                            keyID = 0;
+                            continue;
                     }
-                    else 
-                        continue;
                 }
 
-                else if(keyID == keyC){
-                    keyPressed(key);
-                    auto event = wait(keyChannel);
-                    if(event == keyChannel){
-                        keyID = keyChannel.read();
-                        plrID = 0;
-                        data = keyID - 48;
-                        keyPressed(key);
-                        if(data >= 0 &&  <= 90 && ){
-                            initGame.setplayerInfo(plrID, data);
-                        }
-                    }
+                // else if(keyID == keyC){
+                //     keyPressed(key);
+                //     auto event = wait(keyChannel);
+                //     if(event == keyChannel){
+                //         keyID = keyChannel.read();
+                //         plrID = 0;
+                //         data = keyID - 48;
+                //         keyPressed(key);
+                //         if(data >= 0 &&  <= 90 && ){
+                //             initGame.setplayerInfo(plrID, data);
+                //         }
+                //         else 
+                //             continue;
+                //     }
                     
                 } 
 

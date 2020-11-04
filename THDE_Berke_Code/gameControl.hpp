@@ -26,6 +26,9 @@ private:
     ir_Encoder &my_Encoder;
 
 public:
+    info gameTime;
+    info playerOut;
+    info playerIn;
     gameControl():
         task(4, "ir_Decode"),
         flag_StartSignal(this, "flag_StartSignal"),
@@ -38,11 +41,9 @@ public:
     {}
 
     void triggerPressed(unsigned int plrID, unsigned int data){ //schiet en stuurt naar encoder om te encoden.
-        info shooter;
-        if( !trigger.read() ){
-            my_Encoder.sendMessage(shooter.plrID, shooter.data);
-            flagTrigger.set()
-        }
+        my_Encoder.sendMessage(playerOut.plrID, playerOut.data);
+        flagTrigger.set();
+
     }
 
     void getEntity(bool type){
@@ -53,14 +54,19 @@ public:
     }
 
     void sendParameters(unsigned int plrID, unsigned int data){
-        if(plrID == 0)                  //je hebt de GameTime ontvangen
-            info gameTime{plrID, data};
-        else                            //je hebt de playerOutput informatie ontvangen
-            info playerOut{plrID, data};
+        if(plrID == 0){                  //je hebt de GameTime ontvangen
+            gameTime.plrID = plrID;
+            gameTime.data = data;
+        }
+        else{                            //je hebt de playerOutput informatie ontvangen
+            playerOut.plrID = plrID;
+            playerOut.data = data;
+        }
     }
 
     void sendMessage(unsigned int plrID, unsigned int data){ //Wordt gehit door decoder en slaat gegevens op en set flag.
-        info playerIn{plrID, data};
+        playerIn.plrID = plrID;
+        playerIn.data = data;
         flag_HitSignal.set();
     }
 

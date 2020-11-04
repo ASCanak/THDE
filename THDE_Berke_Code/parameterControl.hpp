@@ -6,8 +6,7 @@
 #ifndef PARAMETERCONTROL_HPP
 #define PARAMETERCONTROL_HPP
 
-struct gameTime{unsigned int plrID; unsigned int data;};
-struct playerInfo{unsigned int plrID; unsigned int data;};
+struct info{unsigned int plrID; unsigned int data;};
 
 class parameterControl : public rtos::<task>{
 
@@ -18,6 +17,9 @@ private:
     gameControl &gameCtrl;
 
 public:
+    info gameTime;
+    info currentInfo;
+
     parameterControl():
         task(3, "parameterControl"),
         currentInfoChannel("currentInfoChannel"),
@@ -28,21 +30,21 @@ public:
         if(data == 0)
             gameCtrl.startGame();
         else 
-            gameTime x{plrID, data};
+            gameTime.plrID = plrID;
+            gameTime.data = data;
     }
 
     void setplayerInfo(unsigned int plrID, unsigned int data){
-        playerInfo currentInfo{plrID, data};
+        currentInfo.plrID = plrID;
+        currentInfo.data = data;
         currentInfoChannel.write(currentInfo);
     }
 
     void getInfo(bool type){
-        gameTime x;
-        playerInfo CurrentInfo;
         if(type == 1)
-            gameCtrl.sendParameters(x.plrID, x.data);  // Send game_Time
+            gameCtrl.sendParameters(gameTime.plrID, gameTime.data);  // Send game_Time
         else 
-            gameCtrl.sendParameters(CurrentInfo.plrID, CurrentInfo.data);  // Send playerInfo
+            gameCtrl.sendParameters(currentInfo.plrID, currentInfo.data);  // Send playerInfo
     }
 
 private:
