@@ -10,10 +10,6 @@ class ir_Decoder : public rtos::task<>{
 
 enum state_t{idle, receive_Message, decode_Message};
 
-hwlib::target::pin_in tsop_signal  = hwlib::target::pin_in( hwlib::target::pins::d8 );
-hwlib::target::pin_out tsop_gnd = hwlib::target::pin_out( hwlib::target::pins::d9 );
-hwlib::target::pin_out tsop_vdd = hwlib::target::pin_out( hwlib::target::pins::d10 );
-
 private:
     state_t state = idle;
     rtos::flag flag_sendBitMessage;
@@ -106,11 +102,14 @@ public:
             
         for(unsigned int j = i; j < (i + 5); j++){
             item += array[j] * exponent;
-            if(j == (i + 4))
+            if(j == (i + 4)){
                 return item;
-            
+            }
+            else
+                continue;
             exponent *= 2;
         }
+        return 0;
     }
 
     void decoding(){

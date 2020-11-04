@@ -3,13 +3,10 @@
 
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "parameterControl.hpp"
 #include "ir_Encoder.hpp"
 #include "OLED.hpp"
 
 struct infoGame{unsigned int plrID; unsigned int data;};
-
-hwlib::target::pin_in_out trigger = hwlib::target::pin_in_out(hwlib::target::pins::d34);
 
 class parameterControl;
 class gameControl : public rtos::task<>{
@@ -17,6 +14,8 @@ class gameControl : public rtos::task<>{
 enum state_t{idle, running};
 
 private:
+    state_t state = idle; 
+
     rtos::flag flag_StartSignal;
     rtos::flag flag_HitSignal; // pool is optioneel 
     rtos::flag flag_DeathSignal;
@@ -24,7 +23,6 @@ private:
     
     int hp;
 
-    parameterControl &paramCtrl;
     ir_Encoder &my_Encoder;
     OLED &screen;
     
@@ -35,9 +33,7 @@ public:
     infoGame playerOut;
     infoGame playerIn;
     
-    gameControl(parameterControl &paramCtrl, ir_Encoder &my_Encoder, OLED &screen);
-
-    void getEntity(bool type);
+    gameControl(ir_Encoder &my_Encoder, OLED &screen);
 
     void sendParameters(unsigned int plrID, unsigned int data);
 

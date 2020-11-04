@@ -9,7 +9,7 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := 
+SOURCES := gameControl.cpp parameterControl.cpp
 
 # header files in this project
 HEADERS := ir_Decoder.hpp gameControl.hpp parameterControl.hpp ir_Encoder.hpp OLED.hpp KeypadTaak.hpp

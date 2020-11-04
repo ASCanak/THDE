@@ -6,9 +6,6 @@
 
 struct hitInfo {unsigned int plrID; unsigned int data; unsigned int hp;};
 
-hwlib::target::pin_oc scl = hwlib::target::pin_oc( hwlib::target::pins::scl );
-hwlib::target::pin_oc sda = hwlib::target::pin_oc( hwlib::target::pins::sda );
-
 hwlib::i2c_bus_bit_banged_scl_sda i2c_bus = hwlib::i2c_bus_bit_banged_scl_sda( scl,sda );
 hwlib::glcd_oled oled = hwlib::glcd_oled( i2c_bus, 0x3c );
 hwlib::font_default_8x8 f1 = hwlib::font_default_8x8();

@@ -1,6 +1,5 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
-#include "parameterControl.hpp"
 #include "ir_Encoder.hpp"
 #include "OLED.hpp"
 #include "gameControl.hpp"
@@ -11,8 +10,6 @@
                 case idle: {
                     auto event = wait(flag_StartSignal);
                     if(event == flag_StartSignal){
-                        getEntity(1);   //get entity game_Time 
-                        getEntity(0);   //get entity player_Info
                         state = running; 
                         break;
                     }
@@ -26,7 +23,7 @@
                         screen.write_HitInfo(playerIn.plrID, playerIn.data, hp);
                     }
                     else if(event == flag_DeathSignal || event == timer_Game){ // "Game_Over"
-                        hwlib::cout << "this boi died, idiot kid i told you he was lamps" << endl;
+                        hwlib::cout << "this nigga died, idiot kid i told you he was lamps \n";
                         screen.write_HitInfo(playerIn.plrID, playerIn.data, 0);
                         state = idle;
                         break;
@@ -42,24 +39,16 @@
         }
     }
 
-    gameControl(parameterControl &paramCtrl, ir_Encoder &my_Encoder, OLED &screen):
+    gameControl::gameControl(ir_Encoder &my_Encoder, OLED &screen):
         task(4, "gameControl"),
         flag_StartSignal(this, "flag_StartSignal"),
         flag_HitSignal(this, "flag_HitSignal"),
         flag_DeathSignal(this, "flag_DeathSignal"),
         timer_Game(this, "timer_Game"),
         hp(100),
-        paramCtrl(paramCtrl),
         my_Encoder(my_Encoder),
         screen(screen) 
     {}
-
-    void gameControl::getEntity(bool type){
-        if(type == 1){                  //get entity game_Time 
-            paramCtrl.getInfo(1);
-        else                            //get entity player_Info 
-            paramCtrl.getInfo(0);
-    }
 
     void gameControl::sendParameters(unsigned int plrID, unsigned int data){
         if(plrID == 0){                  //je hebt de GameTime ontvangen
@@ -89,7 +78,3 @@
     void gameControl::startGame(){
         flag_StartSignal.set();
     }
-
-}
-
-    

@@ -10,16 +10,13 @@ class ir_Encoder : public rtos::task<>{
 
 enum state_t{WAIT_Message, encodeMessage};
 
-hwlib::target::d2_36kHz ir = hwlib::target::d2_36kHz();
-hwlib::target::pin_out led = hwlib::target::pin_out(hwlib::target::pins::d40);
-
 private:
     state_t state = WAIT_Message;
     rtos::flag flag_sendMessage;
     rtos::pool <message> messagePool;
     
 public:
-    ir_Encoder( unsigned int plrID, unsigned int data ):
+    ir_Encoder():
         task(1, "ir_Encode"),
         flag_sendMessage(this, "flag_sendMessage"),
         messagePool("messagePool")

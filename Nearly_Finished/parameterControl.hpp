@@ -27,8 +27,6 @@ public:
 
     void setplayerInfo(unsigned int plrID, unsigned int data);
 
-    void getInfo(bool type);
-
 // private:
 //     void main(){
 //         for(;;){
