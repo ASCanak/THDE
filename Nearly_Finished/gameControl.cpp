@@ -26,7 +26,7 @@
                         screen.write_HitInfo(playerIn.plrID, playerIn.data, hp);
                     }
                     else if(event == flag_DeathSignal || event == timer_Game){ // "Game_Over"
-                        hwlib::cout << "this nigga died, idiot kid i told you he was lamps" << endl;
+                        hwlib::cout << "this boi died, idiot kid i told you he was lamps" << endl;
                         screen.write_HitInfo(playerIn.plrID, playerIn.data, 0);
                         state = idle;
                         break;
