@@ -17,8 +17,8 @@ private:
     hwlib::glcd_oled oled = hwlib::glcd_oled( i2c_bus, 0x3c );
     hwlib::font_default_8x8 f1 = hwlib::font_default_8x8();
 
-    hwlib::part w1 = hwlib::part(oled, hwlibbxy(0, 0),hwlib::xy(128, 32));
-    hwlib::terminal_from scherm = hwlib::terminal_from(w1, f1);
+    // hwlib::part w1 = hwlib::part(oled, hwlibbxy(0, 0),hwlib::xy(128, 32));
+    hwlib::terminal_from scherm = hwlib::terminal_from(oled, f1);
 
 public:
     oledTaak(): 
