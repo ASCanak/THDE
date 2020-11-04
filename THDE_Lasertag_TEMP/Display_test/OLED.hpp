@@ -13,21 +13,17 @@ public:
     oledPool("oledPool")
     {}
 
-    void write_PlrID(char text){
-        oledPool.write(text); oledFlag.set();
-        hwlib::cout << "PlrID: " << "\n";
+    void write_Stats(unsigned int plrID, unsigned int data, unsigned int hp){
+        oledPool.write(plrID, data, hp); oledFlag.set();
+        hwlib::cout << "Hit by plrID: " << plrID << "With wpnPwr: " << data << "HP left: << hp << \n";
         scherm1 << "\f" << oledPool.read() << "\n";
     }
-    //     void write_Wpnpwr(char text){
-    //     oledPool.write(text); oledFlag.set();
-    //     hwlib::cout << "Wpnpwr: " << "\n";
-    //     scherm2 << "\f" << oledPool.read() << "\n";
-    // }
-    //     void write_Tijd(char text){
-    //     oledPool.write(text); oledFlag.set();
-    //     hwlib::cout << "Tijd: " << "\n";
-    //     scherm3 << "\f" << oledPool.read() << "\n";
-    // }
+         void write_Time(unsigned int time){
+         oledPool.write(text); oledFlag.set();
+         hwlib::cout << "Remaining time: " << "\n";
+         scherm2 << "\f" << oledPool.read() << "\n";
+    }
+
 
 private:
     void main(){ // auto kan niet 
