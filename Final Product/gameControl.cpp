@@ -32,11 +32,9 @@ void gameControl::main(){
                     timer_Regulation = 0;
                     break;
                 }
-                else if(!(gun_Trigger.triggerRead())){
-                    my_Encoder.sendMessage(playerOut.plrID, playerOut.data);
-                }
-                else
-                    continue;
+                // else if(!(gun_Trigger.triggerRead())){
+                //     my_Encoder.sendMessage(playerOut.plrID, playerOut.data);
+                // }
             }   
             default:break;        
         }
@@ -44,7 +42,7 @@ void gameControl::main(){
 }
 
 gameControl::gameControl(ir_Encoder &my_Encoder, OLED &screen, trigger &gun_Trigger, gameInfoEntity &game_Entity):
-    task(0, "gameControl"),
+    task(3, "gameControl"),
     flag_StartSignal(this, "flag_StartSignal"),
     flag_HitSignal(this, "flag_HitSignal"),
     flag_DeathSignal(this, "flag_DeathSignal"),

@@ -32,7 +32,5 @@ private:
 
 public:
     keypad(parameterControl &paramCtrl, OLED &screen);
-
-    void keyPressed(char keyID);
 };
 #endif 

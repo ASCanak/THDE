@@ -26,60 +26,41 @@ keypad::keypad(parameterControl &paramCtrl, OLED &screen):
         screen(screen)
     {}
 
-void keypad::keyPressed(char keyID){
-    keyChannel.write(keyID);
-}
-
 void keypad::main(){
     hwlib::cout << "keypad\n";
-    char keyID = 0;
+    char keyID = '\0';
     for(;;){
         hwlib::cout << "test1, Keypad\n";
-        auto key = keypad_Matrix.getc();
+        keyID = keypad_Matrix.getc();
         hwlib::cout << "test2, Keypad\n";
-        keyPressed(key);
-        hwlib::cout << "test3, Keypad\n";
-        auto event = wait(keyChannel);
-        hwlib::cout << "test4, Keypad\n";
 
-        if(event == keyChannel){
-            keyID = keyChannel.read();
-            hwlib::cout << keyID << "\n test1.1, Keypad\n";
-            if(keyID == keyA){
-                hwlib::cout << keyID << "\n test2.1, Keypad\n";
-                keyPressed(key);
-                auto event = wait(keyChannel);
-                if(event == keyChannel){
-                    keyID = keyChannel.read();
-                    plrID = keyID - 48;
-                    if(plrID >= 0 && plrID < 32){
-                        screen.write_plrID(plrID);
-                        continue;
-                    }
-                    else{ 
-                        keyID = 0;
-                        continue;
-                    }
-                }
+        if(keyID == keyA){
+            keyID = keypad_Matrix.getc();
+            hwlib::cout << keyID << "\n test2.1, Keypad\n";
+            plrID = keyID - 48;
+            if(plrID >= 0 && plrID < 10){
+                screen.write_plrID(plrID);
+                continue;
             }
-            else if(keyID == keyB){
-                keyPressed(key);
-                auto event = wait(keyChannel);
-                if(event == keyChannel){
-                    keyID = keyChannel.read();
-                    data = keyID - 48;
-                    if(data >= 0 && data < 32 && plrID != 0){
-                        screen.write_wpnPwrID(data);
-                        paramCtrl.setPlayerInfo(plrID, data);
-                        plrID = 0;
-                        data = 0;
-                    }
-                    else{
-                        keyID = 0;
-                        continue;
-                    }
-                }
+            else{ 
+                keyID = 0;
+                continue;
             }
+        }
+        else if(keyID == keyB){
+            keyID = keypad_Matrix.getc();
+            data = keyID - 48;
+            if(data >= 0 && data < 10 && plrID != 0){
+                screen.write_wpnPwrID(data);
+                paramCtrl.setPlayerInfo(plrID, data);
+                plrID = 0;
+                data = 0;
+            }
+            else{
+                keyID = 0;
+                continue;
+            }
+        }
                   // else if(keyID == keyC){
                 //     keyPressed(key);
                 //     auto event = wait(keyChannel);
@@ -94,7 +75,6 @@ void keypad::main(){
                 //         else 
                 //             continue;
                 //     }  
-                //}
-        }
+                //}    
     } 
 }

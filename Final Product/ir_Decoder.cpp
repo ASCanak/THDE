@@ -24,7 +24,7 @@ void ir_Decoder::main(){
 } 
 
 ir_Decoder::ir_Decoder(parameterControl &paramCtrl, gameControl &gameCtrl, ir_Receiver &my_Receiver):
-        task(2, "ir_Decoder"),
+        task(1, "ir_Decoder"),
         flag_sendBitMessage(this, "flag_sendBitMessage"),
         paramCtrl(paramCtrl), 
         gameCtrl(gameCtrl),

@@ -23,7 +23,7 @@ void ir_Encoder::main(){
 }    
 
 ir_Encoder::ir_Encoder(ir_Led &my_Led):
-    task(3, "ir_Encode"),
+    task(2, "ir_Encode"),
     flag_sendMessage(this, "flag_sendMessage"),
     messagePool("messagePool"),
     my_Led(my_Led)
