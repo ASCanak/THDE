@@ -1,7 +1,7 @@
 #include "ir_Encoder.hpp"
 
-
 void ir_Encoder::main(){
+    hwlib::cout << "ir_Encoder\n";
     for(;;){
         switch(state){
             case WAIT_Message: {

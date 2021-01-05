@@ -1,6 +1,7 @@
 #include "ir_Decoder.hpp"
 
 void ir_Decoder::main(){
+    hwlib::cout << "ir_Decoder\n";
     for(;;){
         switch(state){
             case idle: {

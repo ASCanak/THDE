@@ -17,7 +17,6 @@ char key0 = '0';
 char keyHash = '#';
 char keyD = 'D';
 
-
 keypad::keypad(parameterControl &paramCtrl, OLED &screen):
         task(4,"keypad"),
         keyChannel(this, "keyChannel"),
@@ -32,15 +31,22 @@ void keypad::keyPressed(char keyID){
 }
 
 void keypad::main(){
+    hwlib::cout << "keypad\n";
     char keyID = 0;
     for(;;){
+        hwlib::cout << "test1, Keypad\n";
         auto key = keypad_Matrix.getc();
+        hwlib::cout << "test2, Keypad\n";
         keyPressed(key);
+        hwlib::cout << "test3, Keypad\n";
         auto event = wait(keyChannel);
+        hwlib::cout << "test4, Keypad\n";
 
         if(event == keyChannel){
             keyID = keyChannel.read();
+            hwlib::cout << keyID << "\n test1.1, Keypad\n";
             if(keyID == keyA){
+                hwlib::cout << keyID << "\n test2.1, Keypad\n";
                 keyPressed(key);
                 auto event = wait(keyChannel);
                 if(event == keyChannel){

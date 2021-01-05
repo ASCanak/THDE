@@ -35,6 +35,5 @@ public:
     void write_plrID(unsigned int plrID);
     void write_wpnPwrID(unsigned int data);
     void write_to_Oled(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int myHP, unsigned int time, unsigned int myplrID, unsigned int mywpnPwr);
-
 };
 #endif

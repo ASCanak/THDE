@@ -6,18 +6,12 @@
 #include "gameControl.hpp"
 #include "gameInfoEntity.hpp"
 
-struct infoParam{unsigned int plrID; unsigned int data;};
-
 class gameControl;
-class parameterControl : public rtos::task<>{
-
-//enum state_t{register_playerInfo, WAIT_for_Gametime, WAIT_for_Start};
+class parameterControl{
 
 private:
     gameControl &gameCtrl;
     gameInfoEntity &gameEntity;
-
-    void main();
 
 public:
     parameterControl(gameControl &gameCtrl, gameInfoEntity &gameEntity);

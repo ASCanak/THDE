@@ -43,8 +43,11 @@ void OLED::write_to_Oled(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigne
 }
 
 void OLED::main(){
+    hwlib::cout << "OLED\n";
     for(;;){
+        hwlib::cout << "test1, OLED";
         auto event = wait(hitFlag + timeFlag + plrIDFlag + wpnPwrFlag);
+        hwlib::cout << "test2, OLED";
         if(event == hitFlag || event == timeFlag || event == plrIDFlag || event == wpnPwrFlag){
             hitInfo x{hitPool.read()};
             time = timePool.read();
