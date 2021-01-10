@@ -23,8 +23,8 @@ class keypad : public rtos::task<> {
 
 private:
     rtos::channel<char,16> keyChannel;
-    unsigned int plrID = 0;
-    unsigned int data = 0;
+    unsigned int plrID, wpnPwr, data, time;
+    char keyID = '\0';
     parameterControl &paramCtrl;
     OLED &screen;
 

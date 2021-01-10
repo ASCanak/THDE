@@ -31,13 +31,13 @@ int main( void ){
     hwlib::target::pin_oc scl = hwlib::target::pin_oc(hwlib::target::pins::scl);
     hwlib::target::pin_oc sda = hwlib::target::pin_oc(hwlib::target::pins::sda);
 
-    trigger my_Trigger = trigger(sw);
     ir_Led my_Led = ir_Led(ir, led);
     ir_Receiver my_Receiver = ir_Receiver(tsop_signal, tsop_gnd, tsop_vdd);
     OLED screen = OLED(scl, sda);  
     ir_Encoder my_Encoder = ir_Encoder(my_Led);
     gameInfoEntity my_Entity = gameInfoEntity();
-    gameControl gameCtrl = gameControl(my_Encoder, screen, my_Trigger, my_Entity);
+    gameControl gameCtrl = gameControl(my_Encoder, screen, my_Entity);
+    trigger my_Trigger = trigger(sw, gameCtrl);
     parameterControl paramCtrl = parameterControl(gameCtrl, my_Entity);
     ir_Decoder my_Decoder = ir_Decoder(paramCtrl, gameCtrl, my_Receiver);
     keypad my_Keypad = keypad(paramCtrl, screen);

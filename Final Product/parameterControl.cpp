@@ -6,15 +6,16 @@ parameterControl::parameterControl(gameControl &gameCtrl, gameInfoEntity &gameEn
 {}
 
 void parameterControl::sendMessage(unsigned int data){
-    if(data == 0){
+    if(data == 0)
         gameCtrl.startGame();
-    }
-    else{
-        gameEntity.setGameTime(data);
-    }
+    else
+        gameEntity.set_gameTime(data);
 }
 
-void parameterControl::setPlayerInfo(unsigned int plrID, unsigned int data){
-    gameEntity.setPlrID(plrID);
-    gameEntity.setWpnPwr(data);
+void parameterControl::set_plrID(unsigned int plrID){
+    gameEntity.set_plrID(plrID);
+}
+
+void parameterControl::set_wpnPwr(unsigned int data){
+    gameEntity.set_wpnPwr(data);
 }

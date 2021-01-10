@@ -5,15 +5,15 @@ OLED::OLED(hwlib::target::pin_oc &scl, hwlib::target::pin_oc &sda):
     scl(scl), sda(sda),
     i2c_bus(scl, sda), 
     oled(i2c_bus, 0x3c),
-    w1(oled, hwlib::xy(0, 0), hwlib::xy(128, 32)),
+    w1(oled, hwlib::xy(0, 0), hwlib::xy(128, 64)),
     scherm(w1, f1),
     hitPool("hitPool"), hitFlag(this, "hitFlag"), 
     plrIDPool("plrIDPool"), plrIDFlag(this, "plrIDFlag"), 
     wpnPwrPool("wpnPwrPool"), wpnPwrFlag(this, "wpnPwrFlag"), 
-    timePool("timePool"), timeFlag(this, "timeFlag"),
-    time(60),
-    plrID(1),
-    wpnPwr(0)
+    minPool("timePool"), minFlag(this, "timeFlag"),
+    secPool("timePool"), secFlag(this, "timeFlag"),
+    min(0), seconds(0),
+    plrID(32), wpnPwr(32)
 {}
 
 void OLED::write_HitInfo(unsigned int plrID, unsigned int data, unsigned int hp){
@@ -21,8 +21,12 @@ void OLED::write_HitInfo(unsigned int plrID, unsigned int data, unsigned int hp)
     hitPool.write(x); hitFlag.set();
 }
 
-void OLED::write_Time(unsigned int time){
-    timePool.write(time); timeFlag.set();
+void OLED::write_Min(unsigned int updated_Time){
+    minPool.write(updated_Time); minFlag.set();
+}
+
+void OLED::write_Sec(unsigned int updated_Time){
+    secPool.write(updated_Time); secFlag.set();
 }
 
 void OLED::write_plrID(unsigned int plrID){
@@ -33,27 +37,27 @@ void OLED::write_wpnPwrID(unsigned int data){
     wpnPwrPool.write(data); wpnPwrFlag.set();
 }
 
-void OLED::write_to_Oled(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int myHP, unsigned int time, unsigned int myplrID, unsigned int mywpnPwr){
-    scherm << "\t0001" << "Hit By: " << EnemyID << " For " << EnemywpnPwr << " Damage "<< "\n";
-    scherm << "\t0010" << myHP <<"\n";
-    scherm << "\t0015" << time <<"\n";
-    scherm << "\t0020" << myplrID <<"\n";
-    scherm << "\t0025" << mywpnPwr <<"\n";
+void OLED::write_to_Oled(unsigned int enemyID, unsigned int enemywpnPwr, unsigned int myHP, unsigned int min, unsigned int seconds, unsigned int myplrID, unsigned int mywpnPwr){
+    scherm << "\f" << enemywpnPwr << " DMG by "<< enemyID << "\n\n";
+    scherm << "HP     = " << myHP    << "\nTime   = " << min << ":" << seconds <<"\n";
+    scherm << "plrID  = " << myplrID << "\nwpnPwr = " << mywpnPwr << "\n";
     oled.flush();
 }
 
 void OLED::main(){
     hwlib::cout << "OLED\n";
+    hitInfo x{32, 32, 100};
+    hitPool.write(x);
+    write_to_Oled(x.plrID, x.data, x.hp, min, seconds, plrID, wpnPwr);
     for(;;){
-        hwlib::cout << "test1, OLED";
-        auto event = wait(hitFlag + timeFlag + plrIDFlag + wpnPwrFlag);
-        hwlib::cout << "test2, OLED";
-        if(event == hitFlag || event == timeFlag || event == plrIDFlag || event == wpnPwrFlag){
+        auto event = wait(hitFlag + minFlag + secFlag + plrIDFlag + wpnPwrFlag);
+        if(event == hitFlag || event == minFlag || event == secFlag || event == plrIDFlag || event == wpnPwrFlag){
             hitInfo x{hitPool.read()};
-            time = timePool.read();
+            min = minPool.read();
+            seconds = secPool.read();
             plrID = plrIDPool.read();
             wpnPwr = wpnPwrPool.read();
-            write_to_Oled(x.plrID, x.data, x.hp, time, plrID, wpnPwr);
+            write_to_Oled(x.plrID, x.data, x.hp, min, seconds, plrID, wpnPwr);
         }
     } 
 }

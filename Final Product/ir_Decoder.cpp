@@ -24,7 +24,7 @@ void ir_Decoder::main(){
 } 
 
 ir_Decoder::ir_Decoder(parameterControl &paramCtrl, gameControl &gameCtrl, ir_Receiver &my_Receiver):
-        task(1, "ir_Decoder"),
+        task(0, "ir_Decoder"),
         flag_sendBitMessage(this, "flag_sendBitMessage"),
         paramCtrl(paramCtrl), 
         gameCtrl(gameCtrl),
@@ -51,7 +51,8 @@ unsigned int ir_Decoder::pauze_detectie(unsigned int n){
 }   
 
 void ir_Decoder::message_Receiver(){
-    unsigned int idle, arrayCount = 16;
+    unsigned int idle = 0; 
+    unsigned int arrayCount = 16;
         
     for(;;){
         if(my_Receiver.getCurrentSignal() == 1 && idle > 0 && arrayCount != 0){
@@ -69,10 +70,12 @@ void ir_Decoder::message_Receiver(){
             idle += 100;
         else if(arrayCount == 0)
             break;
-        else 
-            continue;
 		hwlib::wait_us(100);
 	}
+    for(unsigned int i = 0; i < 16; i++){
+		hwlib::cout << array[i] << " ";
+	}
+	hwlib::cout << "\n";
     flag_sendBitMessage.set();
     return;
 }
@@ -92,7 +95,8 @@ bool ir_Decoder::messageCheck(){
 }
 
 unsigned int ir_Decoder::translator(unsigned int itemType){
-    unsigned int i, item = 0;
+    unsigned int i = 0;
+    unsigned int item = 0;
     unsigned int exponent = 1;
 
     if(itemType == 0)
@@ -102,18 +106,15 @@ unsigned int ir_Decoder::translator(unsigned int itemType){
         
     for(unsigned int j = i; j < (i + 5); j++){
         item += array[j] * exponent;
-        if(j == (i + 4)){
+        if(j == (i + 4))
             return item;
-        }
-        else
-            continue;
         exponent *= 2;
     }
     return 0;
 }
 
 void ir_Decoder::decoding(){
-    if (translator(0) == 0)
+    if(translator(0) == 0)
         paramCtrl.sendMessage(translator(1)); // Send Special Command
     else
         gameCtrl.sendMessage(translator(0), translator(1));  // Send Weapon Power/DMG(from plrID)

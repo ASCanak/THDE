@@ -4,7 +4,6 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-
 struct info{unsigned int plrID; unsigned int data;};
 
 class gameInfoEntity{
@@ -17,17 +16,17 @@ private:
 public:
     gameInfoEntity();
 
-    void setPlrID(unsigned int PlrID);
+    void set_plrID(unsigned int plrID);
 
-    void setWpnPwr(unsigned int WpnPwr);
+    void set_wpnPwr(unsigned int wpnPwr);
 
-    void setGameTime(unsigned int speeltijd);
+    void set_gameTime(unsigned int gameTime);
 
-    unsigned int getPlrID();
+    unsigned int get_plrID();
 
-    unsigned int getWpnPwr();
+    unsigned int get_wpnPwr();
 
-    unsigned int getGameTime();
+    unsigned int get_gameTime();
 };
 
 #endif 

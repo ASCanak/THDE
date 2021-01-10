@@ -20,61 +20,98 @@ char keyD = 'D';
 keypad::keypad(parameterControl &paramCtrl, OLED &screen):
         task(4,"keypad"),
         keyChannel(this, "keyChannel"),
-        plrID(0),
-        data(0),
+        plrID(0), wpnPwr(0),
+        data(0), time(0),
+        keyID('\0'),
         paramCtrl(paramCtrl),
         screen(screen)
     {}
 
 void keypad::main(){
     hwlib::cout << "keypad\n";
-    char keyID = '\0';
     for(;;){
-        hwlib::cout << "test1, Keypad\n";
+        hwlib::cout << "Press A for plrID, B for wpnPwrID and C for the special commands: ";
         keyID = keypad_Matrix.getc();
-        hwlib::cout << "test2, Keypad\n";
-
+        hwlib::cout << keyID << "\n";
         if(keyID == keyA){
+            hwlib::cout << "enter plrID: ";
             keyID = keypad_Matrix.getc();
-            hwlib::cout << keyID << "\n test2.1, Keypad\n";
+            hwlib::cout << keyID << "\n";
             plrID = keyID - 48;
-            if(plrID >= 0 && plrID < 10){
-                screen.write_plrID(plrID);
-                continue;
-            }
-            else{ 
-                keyID = 0;
-                continue;
-            }
-        }
-        else if(keyID == keyB){
+            screen.write_plrID(plrID);
+            hwlib::cout << "enter 2nd digit or press * to save current digit: ";
             keyID = keypad_Matrix.getc();
-            data = keyID - 48;
-            if(data >= 0 && data < 10 && plrID != 0){
-                screen.write_wpnPwrID(data);
-                paramCtrl.setPlayerInfo(plrID, data);
-                plrID = 0;
-                data = 0;
+            hwlib::cout << keyID << "\n";
+            
+            if(keyID != keySter){
+                plrID = (plrID * 10) + keyID - 48;
+                hwlib::cout << plrID << "\n";
+                keyID = keySter;
+            }
+            if(plrID > 0 && plrID < 32 && keyID == keySter){
+                screen.write_plrID(plrID);
+                paramCtrl.set_plrID(plrID);
+                continue;
             }
             else{
-                keyID = 0;
+                hwlib::cout << "invalid plrID\n";
+                screen.write_plrID(0);
                 continue;
             }
         }
-                  // else if(keyID == keyC){
-                //     keyPressed(key);
-                //     auto event = wait(keyChannel);
-                //     if(event == keyChannel){
-                //         keyID = keyChannel.read();
-                //         plrID = 0;
-                //         data = keyID - 48;
-                //         keyPressed(key);
-                //         if(data >= 0 &&  <= 90 && ){
-                //             initGame.setplayerInfo(plrID, data);
-                //         }
-                //         else 
-                //             continue;
-                //     }  
-                //}    
+        
+        else if(keyID == keyB){
+            hwlib::cout << "enter wpnPwrID: ";
+            keyID = keypad_Matrix.getc();
+            hwlib::cout << keyID << "\n";
+            wpnPwr = keyID - 48;
+            screen.write_wpnPwrID(wpnPwr);
+            hwlib::cout << "enter 2nd digit or press * to save current digit: ";
+            keyID = keypad_Matrix.getc();
+            hwlib::cout << keyID << "\n";
+            if(keyID != keySter){
+                wpnPwr = (wpnPwr * 10) + keyID - 48;
+                hwlib::cout << wpnPwr << "\n";
+                keyID = keySter;
+            }
+            if(wpnPwr >= 0 && wpnPwr < 32 && keyID == keySter){
+                screen.write_wpnPwrID(wpnPwr);
+                paramCtrl.set_wpnPwr(wpnPwr);
+            }
+            else{
+                hwlib::cout << "invalid wpnPwrID\n";
+                screen.write_wpnPwrID(0);
+                continue;
+            }
+        }
+        else if(keyID == keyC){
+            hwlib::cout << "enter data: ";
+            keyID = keypad_Matrix.getc();
+            hwlib::cout << keyID << "\n";
+            data = keyID - 48;
+            hwlib::cout << "enter 2nd digit or press * to save current digit: ";
+            keyID = keypad_Matrix.getc();
+            hwlib::cout << keyID << "\n";
+            if(keyID != keySter){
+                data = (data * 10) + keyID - 48;
+                hwlib::cout << data << "\n";
+                keyID = keySter;
+            }
+            if(data > 0 && data < 32 && keyID == keySter){
+                time = data;
+                paramCtrl.sendMessage(time);
+                screen.write_Min(time);
+                screen.write_Sec(0);
+            }
+            else if(data == 0 && time > 0 && time < 32 && wpnPwr >= 0 && wpnPwr < 32 && plrID > 0 && plrID < 32 && keyID == keySter){
+                paramCtrl.sendMessage(data);
+            }
+            else{
+                hwlib::cout << "invalid data\n";
+                screen.write_Min(0);
+                screen.write_Sec(0);
+                continue;
+            }
+        }  
     } 
 }

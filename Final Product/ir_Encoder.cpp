@@ -12,8 +12,8 @@ void ir_Encoder::main(){
                 }
             }
             case encodeMessage: {
-                message X{messagePool.read()};
-                ir_Send(encoding(X.plrID, X.data));
+                message x{messagePool.read()};
+                ir_Send(encoding(x.plrID, x.data));
                 state = WAIT_Message;
                 break;
             }    

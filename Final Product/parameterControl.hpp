@@ -18,7 +18,9 @@ public:
 
     void sendMessage(unsigned int data);
 
-    void setPlayerInfo(unsigned int plrID, unsigned int data);
+    void set_plrID(unsigned int plrID);
+    
+    void set_wpnPwr(unsigned int data);
 };
 
 #endif

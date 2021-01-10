@@ -6,7 +6,6 @@
 
 #include "ir_Encoder.hpp"
 #include "OLED.hpp"
-#include "trigger.hpp"
 #include "gameInfoEntity.hpp"
 
 struct infoGame{unsigned int plrID; unsigned int data;};
@@ -21,27 +20,33 @@ private:
     rtos::flag flag_StartSignal;
     rtos::flag flag_HitSignal; // pool is optioneel 
     rtos::flag flag_DeathSignal;
+    rtos::flag flag_Trigger;
     rtos::timer timer_Game;
+    rtos::clock clock_Game;
     
     int hp, timer_Regulation;
 
     ir_Encoder &my_Encoder;
     OLED &screen;
-    trigger &gun_Trigger;
     gameInfoEntity &game_Entity;
     
     void main();
 
 public:
-    int gameTime;
+    int gameTime = 0;
+    int seconds = 0;
     infoGame playerOut;
     infoGame playerIn;
     
-    gameControl(ir_Encoder &my_Encoder, OLED &screen, trigger &gun_Trigger, gameInfoEntity &game_Entity);
+    gameControl(ir_Encoder &my_Encoder, OLED &screen, gameInfoEntity &game_Entity);
 
     void sendMessage(unsigned int plrID, unsigned int data);
 
+    void set_triggerFlag();
+
     void calculateHP();
+
+    void calculateTime();
 
     void startGame();
 
