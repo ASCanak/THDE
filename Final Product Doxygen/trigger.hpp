@@ -5,6 +5,11 @@
 #include "rtos.hpp"
 #include "gameControl.hpp"
 
+/// \brief
+/// Trigger class
+/// \details
+/// This is a trigger class that inherits from rtos::task
+/// The apropriate functions are provided
 class trigger : public rtos::task<>{
 
 private:
@@ -16,7 +21,5 @@ private:
 
 public:
     trigger(hwlib::target::pin_in_out &sw, gameControl &gameCtrl);
-
-    bool triggerRead();
 };
 #endif
