@@ -52,7 +52,7 @@ public:
     void sendMessage(unsigned int plrID, unsigned int data);
     
     /// \brief
-    /// encodes message
+    /// Encodes message
     /// \details
     /// This function uses a for loop to xor the getbit values of PlrID and data
     /// with the unsigned int variabel to make a 16 bit string
