@@ -62,7 +62,7 @@ public:
     /// \brief
     /// Calculates HP
     /// \details
-    /// This function calculates the HP, if HP reaches zero and sets death flag
+    /// This function calculates the HP, when HP reaches zero and sets death flag
     void calculateHP();
     
     /// \brief
