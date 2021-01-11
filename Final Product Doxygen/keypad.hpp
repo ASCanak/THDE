@@ -1,3 +1,11 @@
+/// This file contains Doxygen lines
+/// \brief
+/// keypad class and keypad task
+/// \details
+/// This is a keypad class that inherits from rtos::task
+/// This keypad task makes it so that the user can input and save their plrID and wpnPwrID,
+/// also makes it available for the game master to input the gametime and start the game.
+
 #ifndef KEYPAD_HPP
 #define KEYPAD_HPP
 
