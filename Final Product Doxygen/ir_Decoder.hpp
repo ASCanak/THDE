@@ -7,6 +7,12 @@
 #include "gameControl.hpp"
 #include "ir_Receiver.hpp"
 
+/// \brief
+/// Decoder class
+/// \details
+/// This is a IR-decoder class that inherits from rtos::task
+/// The idle, receive_Message and the decode_Message are stored as 3 state_t enum states 
+/// The apropriate functions are provided
 class ir_Decoder : public rtos::task<>{
 
 enum state_t{idle, receive_Message, decode_Message};
