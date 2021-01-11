@@ -28,6 +28,8 @@ private:
     void main();
 
 public:
+    /// \brief
+    /// Initialisation list
     ir_Decoder(parameterControl &paramCtrl, gameControl &gameCtrl, ir_Receiver &my_Receiver);
 
     /// \brief
