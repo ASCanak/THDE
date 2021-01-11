@@ -59,7 +59,7 @@ gameControl::gameControl(ir_Encoder &my_Encoder, OLED &screen, gameInfoEntity &g
     game_Entity(game_Entity) 
 {}
 
-void gameControl::sendMessage(unsigned int plrID, unsigned int data){ //Wordt gehit door decoder, slaat gegevens op en set flag.
+void gameControl::sendMessage(unsigned int plrID, unsigned int data){ 
     playerIn.plrID = plrID;
     playerIn.data = data;
     flag_HitSignal.set();
