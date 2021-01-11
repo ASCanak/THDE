@@ -1,3 +1,8 @@
+//this file contains Doxygen lines
+///file trigger.hpp
+/// \brief Trigger class 
+/// \details Reads the state of the button and sets a flag
+
 #ifndef TRIGGER_HPP
 #define TRIGGER_HPP
 
@@ -5,11 +10,6 @@
 #include "rtos.hpp"
 #include "gameControl.hpp"
 
-/// \brief
-/// Trigger class
-/// \details
-/// This is a trigger class that inherits from rtos::task
-/// The apropriate functions are provided
 class trigger : public rtos::task<>{
 
 private:
