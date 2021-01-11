@@ -1,3 +1,10 @@
+/// This file contains Doxygen lines
+/// \brief
+/// Encoder class and Encoder task
+/// \details
+/// This is a IR-encoder class that inherits from rtos::task
+/// This tasks encodes recieved messages and writes them to parameterControl
+
 #ifndef IR_ENCODER_HPP
 #define IR_ENCODER_HPP
 
@@ -7,12 +14,6 @@
 
 struct message{unsigned int plrID; unsigned int data;};
 
-/// \brief
-/// Encoder class
-/// \details
-/// This is a IR-encoder class that inherits from rtos::task
-/// The WAIT_message and the encodemessage are stored as 2 state_t enum states 
-/// The apropriate functions are provided
 class ir_Encoder : public rtos::task<>{
 
 enum state_t{WAIT_Message, encodeMessage};
