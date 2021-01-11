@@ -116,6 +116,8 @@ unsigned int ir_Decoder::translator(unsigned int itemType){
 void ir_Decoder::decoding(){
     if(translator(0) == 0)
         paramCtrl.sendMessage(translator(1)); // Send Special Command
-    else
+    else{
         gameCtrl.sendMessage(translator(0), translator(1));  // Send Weapon Power/DMG(from plrID)
+        hwlib::cout << translator(0) << " " << translator(1) << "\n"; 
+    }
 }

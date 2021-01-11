@@ -44,6 +44,8 @@ public:
 
     void set_triggerFlag();
 
+    unsigned int cooldown();
+
     void calculateHP();
 
     void calculateTime();

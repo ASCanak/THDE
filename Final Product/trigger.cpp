@@ -5,6 +5,7 @@ void trigger::main(){
     for(;;){
         if(sw.read() != 1){
             gameCtrl.set_triggerFlag();
+            hwlib::wait_ms(gameCtrl.cooldown());
         }
         hwlib::wait_ms(10);
     }
