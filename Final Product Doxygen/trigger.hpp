@@ -1,7 +1,7 @@
 //this file contains Doxygen lines
 ///file trigger.hpp
 /// \brief Trigger class 
-/// \details Reads the state of the button and sets a flag
+/// \details Reads the state of the button and sets a trigger flag
 
 #ifndef TRIGGER_HPP
 #define TRIGGER_HPP
