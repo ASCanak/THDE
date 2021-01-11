@@ -1,3 +1,10 @@
+/// This file contains Doxygen lines
+/// \brief
+/// gameControl class and gameControl task
+/// \details
+/// This is a gameControl class that inherits from rtos::task
+/// Makes it so that the game can be played
+
 #ifndef GAMECONTROL_HPP
 #define GAMECONTROL_HPP
 
@@ -39,15 +46,35 @@ public:
     infoGame playerIn;
     
     gameControl(ir_Encoder &my_Encoder, OLED &screen, gameInfoEntity &game_Entity);
-
+    
+    /// \brief
+    /// Saves data and sets flag
+    /// \details
+    /// This function when hit, saves data in a struct and sets hit flag
     void sendMessage(unsigned int plrID, unsigned int data);
-
+    
+    /// \brief
+    /// Sets flag
+    /// \details
+    /// This function Sets trigger flag
     void set_triggerFlag();
-
+    
+    /// \brief
+    /// Calculates HP
+    /// \details
+    /// This function calculates the HP, if HP reaches zero and sets death flag
     void calculateHP();
-
+    
+    /// \brief
+    /// Calculates time
+    /// \details
+    /// This function calculates the time whilst writing the current time to the OLED
     void calculateTime();
-
+    
+    /// \brief
+    /// Starts game
+    /// \details
+    /// This function sets the start flag
     void startGame();
 
 };
