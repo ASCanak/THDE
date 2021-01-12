@@ -4,10 +4,10 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-struct eventInfo {unsigned int plrID; unsigned int data; unsigned int hp; unsigned int messageID;};
+struct hitInfo {unsigned int plrID; unsigned int data; unsigned int hp; unsigned int messageID;};
+struct messageInfo {unsigned int message; unsigned int number;};
 
 class OLED : public rtos::task<>{
-
 private:
     hwlib::target::pin_oc &scl;
     hwlib::target::pin_oc &sda;
@@ -20,24 +20,25 @@ private:
     hwlib::terminal_from scherm;
     hwlib::terminal_from scherm2;
     
-    rtos::pool<eventInfo> eventPool; rtos::flag eventFlag;
+    rtos::pool<hitInfo> hitPool; rtos::flag hitFlag;
+    rtos::pool<messageInfo> messagePool; rtos::flag messageFlag;
     rtos::pool<unsigned int> plrIDPool; rtos::flag plrIDFlag;
     rtos::pool<unsigned int> wpnPwrPool; rtos::flag wpnPwrFlag;
     rtos::pool<unsigned int> minPool; rtos::flag minFlag;
     rtos::pool<unsigned int> secPool; rtos::flag secFlag;  
 
-    unsigned int min, seconds, plrID, wpnPwr;
-
     void main();
     
 public:
     OLED(hwlib::target::pin_oc &scl, hwlib::target::pin_oc &sda);
-    void write_eventInfo(unsigned int plrID, unsigned int data, unsigned int hp, unsigned int messageID);
+    void write_hitInfo(unsigned int plrID, unsigned int data, unsigned int hp);
+    void write_message(unsigned int messageID, unsigned int number);
     void write_Min(unsigned int updated_Time);
     void write_Sec(unsigned int updated_Time);
     void write_plrID(unsigned int plrID);
     void write_wpnPwrID(unsigned int data);
-    void write_info_to_OLED(unsigned int myHP, unsigned int min, unsigned int sec, unsigned int myplrID, unsigned int mywpnPwr);
-    void write_event_to_OLED(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int messageID);
+    void initialize_OLED();
+    void display_HUD(unsigned int myHP, unsigned int min, unsigned int sec, unsigned int myplrID, unsigned int mywpnPwr);
+    void display_Message(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int messageID, unsigned int number);
 };
 #endif
