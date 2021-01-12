@@ -19,26 +19,26 @@ void gameControl::main(){
                     timer_Game.set(gameTime * 59'000'000);
                     timer_Regulation++;
                 }
+                
                 auto event = wait(flag_HitSignal + flag_DeathSignal + flag_Trigger + timer_Game + clock_Game);
                 
                 if(event == flag_HitSignal){
                     calculateHP();
-                    screen.write_eventInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp, 3);
+                    screen.write_hitInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp);
                 }
                 else if(event == timer_Game){ // "Game_Over, death by timer"
-                    hwlib::cout << "this boi died, idiot kid i told you he was lamps \n";
                     hp = 100;
-                    screen.write_eventInfo(0, 0, hp, 4);
-                    state = idle;
+                    screen.write_message(11, 100);
                     timer_Regulation = 0;
+                    state = idle;
                     break;
                 }
                 else if(event == flag_DeathSignal){ // "Game_Over, death by player"
-                    hwlib::cout << "this boi died, idiot kid i told you he was lamps \n";
-                    screen.write_eventInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp, 5);
-                    state = idle;
+                    hp = 100;
+                    screen.write_message(12, playerIn.plrID);
                     seconds = 0;
                     timer_Regulation = 0;
+                    state = idle;
                     break;
                 }
                 else if(event == clock_Game){
@@ -79,10 +79,8 @@ unsigned int gameControl::cooldown(){
 
 void gameControl::calculateHP(){
     hp -= (playerIn.data * 2) + 10;
-    if(hp <= 0){
-        hp = 100;
+    if(hp <= 0)
         flag_DeathSignal.set();
-    }
 }
 
 void gameControl::calculateTime(){
