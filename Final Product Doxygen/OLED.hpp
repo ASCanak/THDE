@@ -39,33 +39,34 @@ public:
     OLED(hwlib::target::pin_oc &scl, hwlib::target::pin_oc &sda);
     
     /// \brief
-    /// Writes the hit info to a pool
+    /// Writes the event info to a pool
     /// \details
-    /// This function makes a struct of the three parameters and writes the struct to hit pool and sets hit flag
-    void write_HitInfo(unsigned int plrID, unsigned int data, unsigned int hp);
+    /// This function makes a struct out of the four given parameters and writes that struct to hitpool and sets hitflag
+    void write_eventInfo(unsigned int plrID, unsigned int data, unsigned int hp, unsigned int messageID);
+
     
     /// \brief
     /// Writes the total minutes to a pool
     /// \details
-    /// This function writes the total minutes to min pool and sets min flag
+    /// This function writes the updated_Time parameter to minpool and sets minflag
     void write_Min(unsigned int updated_Time);
     
     /// \brief
     /// Writes the total seconds to a pool
     /// \details
-    /// This function writes the total seconds to sec pool and sets sec flag
+    /// This function writes the updated_Time parameter to secpool and sets secflag
     void write_Sec(unsigned int updated_Time);
     
     /// \brief
     /// Writes the plrID to a pool
     /// \details
-    /// This function write the user inputted plrID to plrID pool and sets plrID flag
+    /// This function write the user's plrID to plrIDpool and sets plrIDflag
     void write_plrID(unsigned int plrID);
     
     /// \brief
     /// Writes the wpnPwrID to a pool
     /// \details
-    /// This function write the user inputted wpnPwrID to wpnPwrID pool and sets wpnPwrID flag
+    /// This function write the user's wpnPwrID to wpnPwrIDpool and sets wpnPwrIDflag
     void write_wpnPwrID(unsigned int data);
     
     /// \brief
