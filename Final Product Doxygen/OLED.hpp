@@ -11,10 +11,10 @@
 #include "hwlib.hpp"
 #include "rtos.hpp"
 
-struct hitInfo {unsigned int plrID; unsigned int data; unsigned int hp;};
+struct hitInfo {unsigned int plrID; unsigned int data; unsigned int hp; unsigned int messageID;};
+struct messageInfo {unsigned int message; unsigned int number;};
 
 class OLED : public rtos::task<>{
-
 private:
     hwlib::target::pin_oc &scl;
     hwlib::target::pin_oc &sda;
@@ -23,27 +23,32 @@ private:
     hwlib::glcd_oled oled;
     hwlib::font_default_8x8 f1;
     hwlib::window_part_t w1;
+    hwlib::window_part_t w2;
     hwlib::terminal_from scherm;
+    hwlib::terminal_from scherm2;
     
     rtos::pool<hitInfo> hitPool; rtos::flag hitFlag;
+    rtos::pool<messageInfo> messagePool; rtos::flag messageFlag;
     rtos::pool<unsigned int> plrIDPool; rtos::flag plrIDFlag;
     rtos::pool<unsigned int> wpnPwrPool; rtos::flag wpnPwrFlag;
     rtos::pool<unsigned int> minPool; rtos::flag minFlag;
     rtos::pool<unsigned int> secPool; rtos::flag secFlag;  
 
-    unsigned int min, seconds, plrID, wpnPwr;
-
     void main();
     
 public:
     OLED(hwlib::target::pin_oc &scl, hwlib::target::pin_oc &sda);
+    /// \brief
+    /// Writes the hit info to a pool
+    /// \details
+    /// This function makes a struct out of the three given parameters and writes that struct to hitpool and sets hitflag
+    void write_hitInfo(unsigned int plrID, unsigned int data, unsigned int hp);
     
     /// \brief
-    /// Writes the event info to a pool
+    /// Writes message
     /// \details
-    /// This function makes a struct out of the four given parameters and writes that struct to hitpool and sets hitflag
-    void write_eventInfo(unsigned int plrID, unsigned int data, unsigned int hp, unsigned int messageID);
-
+    /// This function makes a struct out of the two given parameters and writes that struct to messagepool and sets messageflag    
+    void write_message(unsigned int messageID, unsigned int number);
     
     /// \brief
     /// Writes the total minutes to a pool
@@ -70,9 +75,21 @@ public:
     void write_wpnPwrID(unsigned int data);
     
     /// \brief
-    /// Shows all necessary infomation on the OLED 
+    /// Initialises OLED
     /// \details
-    /// This function writes all the necessary infomation on to the OLED
-    void write_to_Oled(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int myHP, unsigned int min, unsigned int sec, unsigned int myplrID, unsigned int mywpnPwr);
+    /// This function initializes all functions in the oled class
+    void initialize_OLED();
+    
+    /// \brief
+    /// Displays HUD
+    /// \details
+    /// This function displays all the parameters to the OLED screen with context  
+    void display_HUD(unsigned int myHP, unsigned int min, unsigned int sec, unsigned int myplrID, unsigned int mywpnPwr);
+    
+    /// \brief
+    /// Displays message
+    /// \details
+    /// This function displays all the parameters to the OLED screen with context    
+    void display_Message(unsigned int EnemyID, unsigned int EnemywpnPwr, unsigned int messageID, unsigned int number);
 };
 #endif
