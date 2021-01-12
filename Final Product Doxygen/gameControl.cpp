@@ -16,28 +16,36 @@ void gameControl::main(){
             } 
             case running: {
                 if(timer_Regulation == 0){
-                    timer_Game.set(gameTime * 60'000'000);
+                    timer_Game.set(gameTime * 59'000'000);
                     timer_Regulation++;
                 }
                 auto event = wait(flag_HitSignal + flag_DeathSignal + flag_Trigger + timer_Game + clock_Game);
                 
                 if(event == flag_HitSignal){
                     calculateHP();
-                    screen.write_HitInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp);
+                    screen.write_eventInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp, 3);
                 }
-                else if(event == flag_DeathSignal || event == timer_Game){ // "Game_Over"
+                else if(event == timer_Game){ // "Game_Over, death by timer"
                     hwlib::cout << "this boi died, idiot kid i told you he was lamps \n";
-                    screen.write_HitInfo(32, 32, 100);
+                    hp = 100;
+                    screen.write_eventInfo(0, 0, hp, 4);
                     state = idle;
                     timer_Regulation = 0;
-                    hp = 100;
+                    break;
+                }
+                else if(event == flag_DeathSignal){ // "Game_Over, death by player"
+                    hwlib::cout << "this boi died, idiot kid i told you he was lamps \n";
+                    screen.write_eventInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp, 5);
+                    state = idle;
+                    seconds = 0;
+                    timer_Regulation = 0;
                     break;
                 }
                 else if(event == clock_Game){
                     calculateTime();
                 }
                 else if(event == flag_Trigger){
-                     my_Encoder.sendMessage(playerOut.plrID, playerOut.data);
+                    my_Encoder.sendMessage(playerOut.plrID, playerOut.data);
                 }
             }   
             default:break;        
@@ -59,15 +67,20 @@ gameControl::gameControl(ir_Encoder &my_Encoder, OLED &screen, gameInfoEntity &g
     game_Entity(game_Entity) 
 {}
 
-void gameControl::sendMessage(unsigned int plrID, unsigned int data){ 
+void gameControl::sendMessage(unsigned int plrID, unsigned int data){ //Wordt gehit door decoder, slaat gegevens op en set flag.
     playerIn.plrID = plrID;
     playerIn.data = data;
     flag_HitSignal.set();
 }
 
+unsigned int gameControl::cooldown(){
+    return (playerOut.data * 2 + 60); 
+}
+
 void gameControl::calculateHP(){
     hp -= (playerIn.data * 2) + 10;
     if(hp <= 0){
+        hp = 100;
         flag_DeathSignal.set();
     }
 }
