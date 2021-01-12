@@ -23,8 +23,10 @@ void gameControl::main(){
                 auto event = wait(flag_HitSignal + flag_DeathSignal + flag_Trigger + timer_Game + clock_Game);
                 
                 if(event == flag_HitSignal){
-                    calculateHP();
-                    screen.write_hitInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp);
+                    if(playerOut.plrID != playerIn.plrID){
+                        calculateHP();
+                        screen.write_hitInfo(playerIn.plrID, (playerIn.data * 2) + 10, hp);
+                    }
                 }
                 else if(event == timer_Game){ // "Game_Over, death by timer"
                     hp = 100;
@@ -79,8 +81,10 @@ unsigned int gameControl::cooldown(){
 
 void gameControl::calculateHP(){
     hp -= (playerIn.data * 2) + 10;
-    if(hp <= 0)
+    if(hp <= 0){
+        hp = 0;
         flag_DeathSignal.set();
+    }
 }
 
 void gameControl::calculateTime(){
