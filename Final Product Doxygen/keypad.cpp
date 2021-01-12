@@ -81,7 +81,7 @@ void keypad::main(){
             }
             else{
                 screen.write_message(2, 100);
-                screen.write_wpnPwrID(0);
+                screen.write_wpnPwrID(32);
                 continue;
             }
         }
