@@ -29,7 +29,6 @@ keypad::keypad(parameterControl &paramCtrl, OLED &screen):
 
 void keypad::main(){
     hwlib::cout << "keypad\n";
-    screen.initialize_OLED();
     for(;;){
         hwlib::wait_ms(10);
         screen.write_message(3, 100);

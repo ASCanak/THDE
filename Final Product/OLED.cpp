@@ -95,6 +95,7 @@ void OLED::display_Message(unsigned int enemyID, unsigned int enemywpnPwr, unsig
 
 void OLED::main(){
     hwlib::cout << "OLED\n";
+    initialize_OLED();
     for(;;){
         auto event = wait(hitFlag + messageFlag + minFlag + secFlag + plrIDFlag + wpnPwrFlag);
         if(event == hitFlag){
