@@ -60,6 +60,12 @@ public:
     void set_triggerFlag();
     
     /// \brief
+    /// Adds cooldown mechanism
+    /// \details
+    /// This function returns the cooldown number based on the user's wpnPwr input   
+    unsigned int cooldown();
+    
+    /// \brief
     /// Calculates HP
     /// \details
     /// This function calculates the HP, when HP reaches zero and sets death flag
