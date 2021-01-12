@@ -105,6 +105,7 @@ void keypad::main(){
             }
             else if(data == 0 && time > 0 && time < 32 && wpnPwr >= 0 && wpnPwr < 32 && plrID > 0 && plrID < 32 && keyID == keySter){
                 paramCtrl.sendMessage(data);
+                screen.write_eventInfo(0,0,100,2);
             }
             else{
                 hwlib::cout << "invalid data\n";
