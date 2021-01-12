@@ -57,14 +57,12 @@ void ir_Decoder::message_Receiver(){
     for(;;){
         if(my_Receiver.getCurrentSignal() == 1 && idle > 0 && arrayCount != 0){
             if(pauze_detectie(idle) != 2){
-                array[arrayCount - 1] = pauze_detectie(idle);
                 arrayCount--;
+                array[arrayCount] = pauze_detectie(idle);
                 idle = 0;
             }
             else if(pauze_detectie(idle) == 2)
                 idle = 0;
-            else 
-                continue;
         }
         else if(my_Receiver.getCurrentSignal() == 0 && arrayCount != 0) 
             idle += 100;
